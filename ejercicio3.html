@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sumatoria</title>
+    <script defer src="ejercicio3.js"></script> <!-- Enlazamos el archivo JavaScript -->
+</head>
+<body>
+    <h1>Resultado de la Sumatoria</h1>
+    <button onclick="calcularSumatoria()">Calcular S</button>
+    <p id="resultado"></p>
+
+    <script>
+        function calcularSumatoria() {
+            let suma = 0;
+            let numeroMayor = 500;
+            let numeroMenor = 456;
+
+            while (numeroMayor <= 800) {
+                // Sumar ambos números
+                suma += numeroMayor;
+                suma += numeroMenor;
+
+                // Incrementar y decrementar según el patrón
+                numeroMayor += 10;
+                numeroMenor -= 2;
+            }
+
+            // Mostrar el resultado en el elemento con ID "resultado"
+            document.getElementById("resultado").textContent = `La sumatoria es: ${suma}`;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Pagos de Empleados</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calculadora de Pagos de Empleados</h1>
+    <div id="resultados"></div>
+
+    <script>
+        // Definimos las tarifas
+        const tarifaDiurna = 12000; // CLP por hora para turno diurno
+        const tarifaNocturna = 16000; // CLP por hora para turno nocturno
+        const incrementoDomingoDiurno = 2000; // Incremento por hora para domingo diurno
+        const incrementoDomingoNocturno = 3000; // Incremento por hora para domingo nocturno
+
+        // Definimos la duración del turno (10 horas por turno)
+        const horasPorTurno = 10;
+
+        // Función para calcular el pago diario según el turno y si es domingo
+        function calcularPago(turno, esDomingo) {
+            let tarifa;
+            if (turno === "diurno") {
+                tarifa = esDomingo ? tarifaDiurna + incrementoDomingoDiurno : tarifaDiurna;
+            } else if (turno === "nocturno") {
+                tarifa = esDomingo ? tarifaNocturna + incrementoDomingoNocturno : tarifaNocturna;
+            }
+            return tarifa * horasPorTurno;
+        }
+
+        // Crear empleados con su información de turnos
+        const empleados = [
+            {
+                nombre: "Empleado 1",
+                turnos: {
+                    lunes: "nocturno",
+                    martes: "nocturno",
+                    miercoles: "nocturno",
+                    jueves: "diurno",
+                    viernes: "diurno",
+                },
+            },
+            {
+                nombre: "Empleado 2",
+                turnos: {
+                    martes: "nocturno",
+                    miercoles: "nocturno",
+                    jueves: "nocturno",
+                    domingo: "diurno", // con incremento
+                },
+            },
+            {
+                nombre: "Empleado 3",
+                turnos: {
+                    miercoles: "diurno",
+                    jueves: "diurno",
+                    viernes: "diurno",
+                    sabado: "nocturno",
+                    domingo: "nocturno", // con incremento
+                },
+            }
+        ];
+
+        // Función para mostrar los resultados en la página
+        function mostrarResultados() {
+            const resultadosDiv = document.getElementById("resultados");
+            resultadosDiv.innerHTML = ''; // Limpiar contenido previo
+
+            empleados.forEach(empleado => {
+                let totalSemanal = 0;
+                let empleadoInfo = `<h2>${empleado.nombre}</h2>`;
+
+                // Recorremos los días trabajados por cada empleado
+                for (let dia in empleado.turnos) {
+                    let esDomingo = dia === "domingo"; // Verificar si es domingo
+                    let turno = empleado.turnos[dia];
+                    let pagoDiario = calcularPago(turno, esDomingo);
+                    totalSemanal += pagoDiario;
+
+                    empleadoInfo += `<p>Día: ${dia}, Turno: ${turno}, Pago Diario: ${pagoDiario} CLP</p>`;
+                }
+
+                empleadoInfo += `<h3>Total semanal: ${totalSemanal} CLP</h3>`;
+                resultadosDiv.innerHTML += empleadoInfo; // Añadir al HTML
+            });
+        }
+
+        // Ejecutar la función para mostrar los resultados al cargar la página
+        document.addEventListener("DOMContentLoaded", mostrarResultados);
+    </script>
+</body>
+</html>
